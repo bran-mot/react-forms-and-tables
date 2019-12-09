@@ -13,11 +13,19 @@ export default class App extends React.Component {
 			age: ''
 		};
 		this.changeFirst = this.changeFirst.bind(this);
+		this.changeLast = this.changeLast.bind(this);
+		this.changeAge = this.changeAge.bind(this);
 	}
 
 	//functions
 	changeFirst(event) {
 		this.setState({ first: event.target.value });
+	}
+	changeLast(event) {
+		this.setState({ last: event.target.value });
+	}
+	changeAge(event) {
+		this.setState({ age: event.target.value });
 	}
 
 	//render
@@ -34,8 +42,18 @@ export default class App extends React.Component {
 					value={this.state.first}
 					onChange={this.changeFirst}
 				/>
-				<Input type="text" value="Last Name" name="last" />
-				<Input type="number" value="0" name="age" />
+				<Input
+					type="text"
+					name="last"
+					value={this.state.last}
+					onChange={this.changeLast}
+				/>
+				<Input
+					type="text"
+					name="age"
+					value={this.state.age}
+					onChange={this.changeAge}
+				/>
 				<Button type="submit">Save</Button>
 				<table>
 					<thead>
