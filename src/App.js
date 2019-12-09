@@ -4,6 +4,7 @@ import Form from './Components/Form';
 import Input from './Components/Input';
 import Button from './Components/Button';
 import './App.css';
+import Table from './Components/Table';
 
 export default class App extends React.Component {
 	constructor(props) {
@@ -38,7 +39,6 @@ export default class App extends React.Component {
 	}
 	changeLast(event) {
 		var newLast = event.target.value;
-		debugger;
 		this.setState(previousState => {
 			return {
 				newPerson: Object.assign({}, previousState.newPerson, {
@@ -58,9 +58,15 @@ export default class App extends React.Component {
 		});
 	}
 	submitForm(event) {
+		event.preventDefault();
 		this.setState(previousState => {
 			return {
-				people: previousState.people.concat(previousState.newPerson)
+				people: previousState.people.concat(previousState.newPerson),
+				newPerson: Object.assign({
+					first: '',
+					last: '',
+					age: ''
+				})
 			};
 		});
 	}
@@ -68,23 +74,34 @@ export default class App extends React.Component {
 	render() {
 		let isBlank;
 		if (
-			this.state.newPerson.age == '' ||
-			this.state.newPerson.first === '' ||
-			this.state.newPerson.last === ''
+			this.state.newPerson.age != '' ||
+			this.state.newPerson.first != '' ||
+			this.state.newPerson.last != ''
 		) {
-			isBlank = true;
-		} else {
 			isBlank = false;
+		} else {
+			isBlank = true;
 		}
 
 		return (
 			<div className="App">
-				{isBlank != true && (
-					<h1>
-						Hello, {this.state.newPerson.first} {this.state.newPerson.last}. You
-						are {this.state.newPerson.age} years old.
-					</h1>
-				)}
+				<h1>
+					{this.state.newPerson.first != '' ? (
+						<span>Hello, {this.state.newPerson.first} </span>
+					) : (
+						''
+					)}
+					{this.state.newPerson.last != '' ? (
+						<span>{this.state.newPerson.last}. </span>
+					) : (
+						''
+					)}
+					{this.state.newPerson.age ? (
+						<span>You are {this.state.newPerson.age} years old.</span>
+					) : (
+						''
+					)}
+				</h1>
 				<Form onSubmit={this.submitForm}>
 					<Input
 						type="text"
@@ -105,18 +122,7 @@ export default class App extends React.Component {
 						onChange={this.changeAge}
 					/>
 				</Form>
-				<table>
-					<thead>
-						<tr>
-							<th>Table here</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>table body hre</td>
-						</tr>
-					</tbody>
-				</table>
+				<Table people={this.state.people} />
 			</div>
 		);
 	}
