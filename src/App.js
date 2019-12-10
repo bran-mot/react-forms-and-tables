@@ -5,12 +5,12 @@ import Input from './Components/Input';
 import Button from './Components/Button';
 import './App.css';
 import Table from './Components/Table';
-
 export default class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			newPerson: {
+				id: '',
 				first: '',
 				last: '',
 				age: ''
@@ -18,12 +18,26 @@ export default class App extends React.Component {
 			first: '',
 			last: '',
 			age: '',
-			people: []
+			people: [
+				{
+					id: '1',
+					first: 'John',
+					last: 'Smith',
+					age: 24
+				},
+				{
+					id: '2',
+					first: 'Mary',
+					last: 'Johnson',
+					age: '66'
+				}
+			]
 		};
 		this.changeFirst = this.changeFirst.bind(this);
 		this.changeLast = this.changeLast.bind(this);
 		this.changeAge = this.changeAge.bind(this);
 		this.submitForm = this.submitForm.bind(this);
+		this.deletePerson = this.deletePerson.bind(this);
 	}
 
 	//functions
@@ -37,6 +51,7 @@ export default class App extends React.Component {
 			};
 		});
 	}
+
 	changeLast(event) {
 		var newLast = event.target.value;
 		this.setState(previousState => {
@@ -47,6 +62,7 @@ export default class App extends React.Component {
 			};
 		});
 	}
+
 	changeAge(event) {
 		var newAge = event.target.value;
 		this.setState(previousState => {
@@ -57,10 +73,14 @@ export default class App extends React.Component {
 			};
 		});
 	}
+
 	submitForm(event) {
 		event.preventDefault();
 		this.setState(previousState => {
 			return {
+				newPerson: Object.assign({}, previousState.newPerson, {
+					id: previousState.people.length + 1
+				}),
 				people: previousState.people.concat(previousState.newPerson),
 				newPerson: Object.assign({
 					first: '',
@@ -70,19 +90,18 @@ export default class App extends React.Component {
 			};
 		});
 	}
+
+	deletePerson(id) {
+		console.log('test');
+		this.setState(previousState => {
+			return {
+				people: previousState.people.filter(person => person.id !== id)
+			};
+		});
+	}
+
 	//render
 	render() {
-		let isBlank;
-		if (
-			this.state.newPerson.age != '' ||
-			this.state.newPerson.first != '' ||
-			this.state.newPerson.last != ''
-		) {
-			isBlank = false;
-		} else {
-			isBlank = true;
-		}
-
 		return (
 			<div className="App">
 				<h1>
@@ -122,7 +141,7 @@ export default class App extends React.Component {
 						onChange={this.changeAge}
 					/>
 				</Form>
-				<Table people={this.state.people} />
+				<Table people={this.state.people} onDelete={this.deletePerson} />
 			</div>
 		);
 	}

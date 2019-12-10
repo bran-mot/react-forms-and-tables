@@ -1,7 +1,6 @@
 import React from 'react';
 
 export default function(props) {
-	debugger;
 	return (
 		<table>
 			<thead>
@@ -18,6 +17,15 @@ export default function(props) {
 							<td>{person.first}</td>
 							<td>{person.last}</td>
 							<td>{person.age}</td>
+							<td>
+								<button
+									onClick={() => {
+										props.onDelete(person.id);
+									}}
+								>
+									Delete
+								</button>
+							</td>
 						</tr>
 					);
 				})}
